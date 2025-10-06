@@ -6,7 +6,7 @@ import {
   Inter_700Bold
 } from "@expo-google-fonts/inter"
 
-import { colors } from "@/theme/colors";
+import { colors } from "@/theme";
 import { Loading } from "@/components/Loading";
 
 
