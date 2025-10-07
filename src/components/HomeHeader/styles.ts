@@ -19,5 +19,11 @@ export const style = StyleSheet.create({
     fontSize: 32,
     color: colors.white,
     fontFamily: fontFamily.medium
+  },
+  summaryContainer: {
+    width: "100%",
+    gap: 12,
+    flexDirection: "row",
+    justifyContent: "space-between"
   }
 })
