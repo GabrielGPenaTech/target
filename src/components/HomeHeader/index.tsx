@@ -36,7 +36,7 @@ export function HomeHeader({ data }: Props) {
         <Summary
           data={{ label: "Saídas", value: data.output }}
           icon={{ name: "arrow-downward", color: colors.red[400] }}
-          isLabelPositionLeft
+          isLabelPositionRight
         />
       </View>
     </LinearGradient>

@@ -14,14 +14,14 @@ type Props = {
     name: keyof typeof MaterialIcons.glyphMap
     color: ColorValue
   },
-  isLabelPositionLeft?: boolean
+  isLabelPositionRight?: boolean
 }
 
-export function Summary({ data, icon, isLabelPositionLeft = false }: Props) {
+export function Summary({ data, icon, isLabelPositionRight = false }: Props) {
 
   return (
     <View style={styles.container}>
-      <View style={[styles.header, isLabelPositionLeft && { justifyContent: "flex-end" }]}>
+      <View style={[styles.header, isLabelPositionRight && { justifyContent: "flex-end" }]}>
         <MaterialIcons name={icon.name} size={20} color={icon.color} />
         <Text style={styles.label}>{data.label}</Text>
       </View>
