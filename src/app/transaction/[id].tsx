@@ -1,12 +1,17 @@
+import { useState } from "react";
+import { View } from "react-native";
+import { useLocalSearchParams } from "expo-router";
+
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
 import { InputCurrency } from "@/components/InputCurrency";
 import { PageHeader } from "@/components/PageHeader";
-import { useLocalSearchParams } from "expo-router";
-import { View } from "react-native";
+import { TransactionType } from "@/components/TransactionType";
+import { TransactionTypes } from "@/utils/TransactionTypes";
 
 
 export default function Transaction() {
+  const [type, setType] = useState(TransactionTypes.Input)
   const param = useLocalSearchParams<{ id: string }>()
 
   return (
@@ -17,6 +22,7 @@ export default function Transaction() {
       />
 
       <View style={{ marginTop: 32, gap: 24 }}>
+        <TransactionType selected={type} onChange={setType} />
         <InputCurrency value={0} label="Valor (R$)" />
 
         <Input label="Motivo (opcional)" placeholder="Ex: Investir em CDB de 100% no banco XPTO" />
