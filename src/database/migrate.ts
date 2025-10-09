@@ -12,7 +12,7 @@ export async function migrate(database: SQLiteDatabase) {
         updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
       );
 
-      CREATE TABLE IF NOT EXISTS transaction (
+      CREATE TABLE IF NOT EXISTS transactions (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         target_id INTEGER NOT NULL,
         amount FLOAT NOT NULL,
@@ -22,7 +22,7 @@ export async function migrate(database: SQLiteDatabase) {
 
         CONSTRAINT fk_targets_transactions
         FOREIGN KEY (target_id) REFERENCES targets(id)
-        ON DELETE CASCATE
+        ON DELETE CASCADE
       );
     
     `)
