@@ -2,12 +2,13 @@ import { useCallback, useState } from "react";
 import { Alert, StatusBar, View } from "react-native";
 import { router, useFocusEffect } from "expo-router"
 
-import { List } from "@/components/List";
 import { Target, type TargetProps } from "@/components/Target";
-import { Button } from "@/components/Button";
-import { HomeHeader } from "@/components/HomeHeader";
 import { useTargetDatabase } from "@/database/useTargetDatabase";
+import { numberToCurrency } from "@/utils/numberToCurrency";
+import { HomeHeader } from "@/components/HomeHeader";
 import { Loading } from "@/components/Loading";
+import { Button } from "@/components/Button";
+import { List } from "@/components/List";
 
 const summary = {
   total: "R$ 2.680,00",
@@ -27,9 +28,9 @@ export default function Index() {
       return response.map(item => ({
         id: String(item.id),
         name: item.name,
-        current: String(item.current),
+        current: numberToCurrency(item.current),
         percentage: item.percentage.toFixed(0) + "%",
-        target: String(item.amount)
+        target: numberToCurrency(item.amount)
       }))
     } catch (error) {
       Alert.alert("Erro", "Não possível carregar as metas.")
