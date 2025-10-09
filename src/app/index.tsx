@@ -1,10 +1,12 @@
-import { StatusBar, View } from "react-native";
-import { router } from "expo-router"
+import { useCallback } from "react";
+import { Alert, StatusBar, View } from "react-native";
+import { router, useFocusEffect } from "expo-router"
 
-import { HomeHeader } from "@/components/HomeHeader";
-import { Target } from "@/components/Target";
 import { List } from "@/components/List";
+import { Target } from "@/components/Target";
 import { Button } from "@/components/Button";
+import { HomeHeader } from "@/components/HomeHeader";
+import { useTargetDatabase } from "@/database/useTargetDatabase";
 
 const summary = {
   total: "R$ 2.680,00",
@@ -37,6 +39,26 @@ const targets = [
 ]
 
 export default function Index() {
+  const targetDatabase = useTargetDatabase()
+
+  async function fetchTargets() {
+    try {
+      const response = await targetDatabase.listBySavedValue()
+
+      console.log(response)
+
+    } catch (error) {
+      Alert.alert("Erro", "Não possível carregar as metas.")
+      console.log(error)
+    }
+  }
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchTargets()
+    }, [])
+  )
+
   return (
     <View style={{ flex: 1 }}>
       <StatusBar barStyle="light-content" />
