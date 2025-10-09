@@ -22,6 +22,7 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     color: colors.gray[600],
     fontFamily: fontFamily.regular,
-    textAlign: "center"
+    textAlign: "center",
+    marginTop: 24
   }
 })
