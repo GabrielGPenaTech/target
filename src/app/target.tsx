@@ -5,7 +5,7 @@ import { InputCurrency } from "@/components/InputCurrency";
 import { useTargetDatabase } from "@/database/useTargetDatabase";
 import { PageHeader } from "@/components/PageHeader";
 import { Button } from "@/components/Button";
-import { Alert, View } from "react-native";
+import { Alert, StatusBar, View } from "react-native";
 import { Input } from "@/components/Input";
 
 export default function Target() {
@@ -118,6 +118,8 @@ export default function Target() {
 
   return (
     <View style={{ flex: 1, padding: 24 }}>
+      <StatusBar barStyle="dark-content" />
+
       <PageHeader
         title="Meta"
         subtitle="Economize para alcançar sua meta financeira."
