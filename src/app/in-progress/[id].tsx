@@ -1,33 +1,21 @@
 import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
 import { Alert, View } from "react-native";
 
+import { useTransactionsDatabase } from "@/database/useTransactionsDatabase";
 import { Transaction, TransactionProps } from "@/components/Transaction";
 import { useTargetDatabase } from "@/database/useTargetDatabase";
-import { TransactionTypes } from "@/utils/TransactionTypes";
 import { numberToCurrency } from "@/utils/numberToCurrency";
+import { TransactionTypes } from "@/utils/TransactionTypes";
 import { PageHeader } from "@/components/PageHeader";
 import { Progress } from "@/components/Progress";
+import { Loading } from "@/components/Loading";
 import { useCallback, useState } from "react";
 import { Button } from "@/components/Button";
 import { List } from "@/components/List";
-import { Loading } from "@/components/Loading";
 
-const transactions: TransactionProps[] = [
-  {
-    id: "1",
-    value: "R$ 300,00",
-    date: "12/04/25",
-    description: "CDB de 110% no banco XPTO",
-    type: TransactionTypes.Output
-  },
-  {
-    id: "2",
-    value: "R$ 20,00",
-    date: "12/04/25",
-    type: TransactionTypes.Input
-  },
-]
+
 export default function InProgress() {
+  const [transactions, setTransactions] = useState<TransactionProps[]>([])
   const [isFetching, setIsFetching] = useState(true)
   const [details, setDetails] = useState({
     name: "",
@@ -39,8 +27,9 @@ export default function InProgress() {
   const param = useLocalSearchParams<{ id: string }>()
 
   const targetDatabase = useTargetDatabase()
+  const transactionsDatabase = useTransactionsDatabase()
 
-  async function fetchDetails() {
+  async function fetchTargetDetails() {
     try {
       const response = await targetDatabase.show(Number(param.id))
 
@@ -56,10 +45,31 @@ export default function InProgress() {
     }
   }
 
-  async function fetchData() {
-    const fetchDetailsPromise = fetchDetails()
+  async function fetchTransactions() {
+    try {
+      const response = await transactionsDatabase.listByTargetId(Number(param.id))
 
-    await Promise.all([fetchDetailsPromise])
+      const transactions: TransactionProps[] = response.map(item => ({
+        id: String(item.id),
+        value: numberToCurrency(item.amount),
+        date: String(item.created_at),
+        description: item.observation,
+        type: item.amount < 0 ? TransactionTypes.Output : TransactionTypes.Input
+      }))
+
+      setTransactions(transactions)
+
+    } catch (error) {
+      Alert.alert("Erro", "Não foi possível carregar as transações")
+      console.log(error)
+    }
+  }
+
+  async function fetchData() {
+    const fetchTargetDetailsPromise = fetchTargetDetails()
+    const fetchTransactionsPromise = fetchTransactions()
+
+    await Promise.all([fetchTargetDetailsPromise, fetchTransactionsPromise])
 
     setIsFetching(false)
   }
