@@ -39,7 +39,6 @@ export default function Index() {
   async function fetchSummary(): Promise<HomeHeaderProps> {
     try {
       const response = await transactionsDatabase.summary()
-      console.log(response)
 
       const total = response.input + response.output
 
