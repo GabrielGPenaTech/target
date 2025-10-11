@@ -1,5 +1,6 @@
 import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
 import { Alert, View } from "react-native";
+import dayjs from "dayjs";
 
 import { useTransactionsDatabase } from "@/database/useTransactionsDatabase";
 import { Transaction, TransactionProps } from "@/components/Transaction";
@@ -52,7 +53,7 @@ export default function InProgress() {
       const transactions: TransactionProps[] = response.map(item => ({
         id: String(item.id),
         value: numberToCurrency(item.amount),
-        date: String(item.created_at),
+        date: dayjs(item.created_at).format("DD/MM/YYYY [ás] HH:mm"),
         description: item.observation,
         type: item.amount < 0 ? TransactionTypes.Output : TransactionTypes.Input
       }))
